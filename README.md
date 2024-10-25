@@ -1,4 +1,9 @@
-# front-vue2
+# Minecraft Pixel Art Creator
+
+## Project online
+```
+https://mcpixelart.com
+```
 
 ## Project setup
 ```
