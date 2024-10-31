@@ -36,6 +36,7 @@
         </div>
         <div class="box borderShade" @click="$router.push('/3d')">
           <img src="@/assets/img/3d.png">
+          <img src="@/assets/img/新.svg" id="new">
           <div class="shade">
             <div><h3>3D</h3></div>
             <h6>{{ lang.d3 }}</h6>
@@ -182,5 +183,13 @@ export default {
     font-size: 36px;
     color: rgb(232, 232, 232);
     transition: all .3s ease;
+  }
+
+  #new {
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 64px;
+    height: 64px;
   }
 </style>

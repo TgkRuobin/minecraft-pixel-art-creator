@@ -6,8 +6,8 @@
     <NavBar @help="showHelp"></NavBar>
     <AlertModal 
       :visible="status.showAlert"
-      :msg="alertMsg"
-      :icon="alertIcon"
+      :msg="status.alertMsg"
+      :icon="status.alertIcon"
       @hide="status.showAlert = false"
     >
     </AlertModal>
@@ -147,7 +147,7 @@
         </div>
       </div>
 
-      <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasHelp" aria-labelledby="offcanvasHelpLabel">
+      <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasHelp2" aria-labelledby="offcanvasHelpLabel">
         <div class="offcanvas-header">
           <h4 class="offcanvas-title"><b>{{ lang.help }}</b></h4>
           <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
@@ -164,7 +164,7 @@
           <h5><i>{{ lang.help_step }}</i></h5>
           <p>
             <ol>
-              <li v-for="(step,stepIndex) in lang.help_steps" :key="'helpStep'+stepIndex">
+              <li v-for="(step,stepIndex) in lang.help_steps_2" :key="'helpStep'+stepIndex">
                 {{ step }}
               </li>
             </ol>
@@ -219,6 +219,14 @@ export default {
         showModal2D: false,
         //是否显示alert模态框
         showAlert: false,
+        //alert模态框提示信息
+        alertMsg: '提示',
+        //alert模态框图标种类
+        // 0.info
+        // 1.ok
+        // 2.alert
+        // 3.error
+        alertIcon: 0,
       },
       //提供给子组件的图片数据
       imgPreview: '',
@@ -227,14 +235,7 @@ export default {
         direct: 'z',
         degree: 0,
       },
-      //alert模态框提示信息
-      alertMsg: '提示',
-      //alert模态框图标种类
-      // 0.info
-      // 1.ok
-      // 2.alert
-      // 3.error
-      alertIcon: 0,
+      
     }
   },
   created() {
@@ -247,16 +248,17 @@ export default {
       bc.count = 0
       bc.color_rgb = this.hexToRgb(bc.color)
     }))
-    //覆盖默认模态框
-    window.alert = (msg='',icon=0) => {
-      this.alertMsg = msg
-      this.alertIcon = icon
-      this.status.showAlert = true
-    }
+
     //加载历史习惯数据
     this.loadHist()
   },
   methods: {
+    //显示模态框
+    alert(msg = '',icon = 0) {
+      this.status.alertMsg = msg
+      this.status.alertIcon = icon
+      this.status.showAlert = true
+    },
     //从cookie加载持久化信息
     loadHist() {
       let hist_bs = Cookies.get('hist-bs')
@@ -276,11 +278,11 @@ export default {
         this.width = hist_sz.width
       }
     },
-    //help
+    //显示帮助
     showHelp() {
       const a = document.createElement('a')
       a.setAttribute('data-bs-toggle','offcanvas')
-      a.href = '#offcanvasHelp'
+      a.href = '#offcanvasHelp2'
       document.querySelector('body').appendChild(a)
       a.click()
       a.remove()
@@ -340,7 +342,7 @@ export default {
       }
       const file = event.target.files[0]
       if (!file.type.startsWith('image/')) {  
-        alert(this.lang.a_selectpic)
+        this.alert(this.lang.a_selectpic)
         return
       }
       const reader = new FileReader()
@@ -399,7 +401,7 @@ export default {
     //制作像素画
     make() {
       if(!this.isBlockSelected){
-        alert(this.lang.a_selectblock)
+        this.alert(this.lang.a_selectblock)
         return
       }
       if(this.imageData){
@@ -430,6 +432,7 @@ export default {
             
             //透明阈值
             const a_ = 100
+            //透明方块为空气
             if (a <= a_){
               this.posInfo[y][x] = 'air'
               continue
@@ -454,13 +457,14 @@ export default {
             this.usedBlock.push(bc)
           }
         }
-        alert(this.lang.a_finish,1)
+        this.alert(this.lang.a_finish,1)
       }else{
-        alert(this.lang.a_uploadpic)
+        this.alert(this.lang.a_uploadpic)
       }
       this.status.artMaking = false
     },
     downloadFile(fname){
+      //隐藏的a标签用于触发自动下载
       const a = document.createElement('a')
       const href = 'https://mcpixelart.com/lite/' + fname
       a.href = href
@@ -468,7 +472,8 @@ export default {
       document.querySelector('body').appendChild(a)
       a.click()
       a.remove()
-      alert(`${this.lang.autodl} <br><a href="${href}">${href}</a><br> ${this.lang.dldesp}`)
+      //模态框里的a标签为手动下载
+      this.alert(`${this.lang.autodl} <br><a href="${href}">${href}</a><br> ${this.lang.dldesp}`,1)
     },
     //上传服务器 下载投影文件
     getLitematica(){
@@ -491,17 +496,17 @@ export default {
             this.downloadFile(response.data.url)
           }else{
             //服务器返回了错误的格式
-            alert(this.lang.a_500+' <br> '+this.lang.con_mail)
+            this.alert(this.lang.a_500 + ' <br> ' + this.lang.con_mail)
           }
         })
         .catch(error=>{
-          alert(this.lang.a_400+' <br> '+error,3)
+          this.alert(this.lang.a_400+' <br> '+error,3)
         })
         .finally(() => {
           this.status.liteMaking = false
         })
       }else{
-        alert(this.lang.a_makepic)
+        this.alert(this.lang.a_makepic)
       }
     },
     
@@ -664,7 +669,7 @@ export default {
     background-image: url('@/assets/img/BlockCSS.png');
     transform: translateY(calc(50% - 4px));
   }
-  .offcanvas-body{
+  #offcanvasHelp2 {
     h5{
       color:rgb(22, 177, 255)
     }

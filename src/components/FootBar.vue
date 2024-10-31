@@ -8,7 +8,10 @@
       <a href="https://beian.miit.gov.cn" target="_blank">蜀ICP备2024071913号-2</a>
     </div>
     <div>
-      <a href="https://mcpixelart.com/version.html">Version 2.0</a>
+      <a href="https://mcpixelart.com/version.html">Version 2.1</a>
+    </div>
+    <div>
+      <a href="https://mcpixelart.com/Privacy.html">Privacy</a>
     </div>
   </footer>
 </template>

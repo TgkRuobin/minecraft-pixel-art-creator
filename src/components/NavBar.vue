@@ -5,7 +5,7 @@
     <!-- logo -->
     <div style="display: flex;flex-flow: row nowrap;align-items: center;" class="blur">
       <img src="@/assets/img/favicon.png" alt="PX" style="height: 48px;width: 48px;">
-      <h4>{{ lang.title }}</h4>
+      <h4>{{ lang.h2title }}</h4>
     </div>
     <div class="blur right-bottom">
       <img 

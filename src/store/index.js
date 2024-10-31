@@ -868,12 +868,12 @@ export default new Vuex.Store({
     ],
     lang_en: {
       a_selectpic: 'Please select a picture',
-      a_400: 'Upload error,is the image size too large?',
+      a_400: 'Upload error,is the size too large?',
       a_500: 'Received unexcepted data.Try again or contact me',
-      a_selectblock: 'Please click <Select Blocks>',
-      a_makepic: 'Please click <Make>',
+      a_selectblock: 'Please click [Select Blocks]',
+      a_makepic: 'Please click [Make]',
       a_finish: 'Success',
-      a_uploadpic: 'Please upload a picture first',
+      a_uploadpic: 'Please upload the file first',
       autodl: 'Not automatically download? Click:',
       dldesp: 'You can access the link on any device whenever',
 
@@ -886,27 +886,38 @@ export default new Vuex.Store({
       title: 'Minecraft Pixel Art/Sculpture Convert',
       help: 'help',
 
+      help_howtouse: 'How to use',
       help_contact: 'Contact Me',
       help_desp: 'If you have any problems or suggestions,please contact me through the following methods',
       help_mail: 'E-mail: 19950083014@163.com',
       help_wechat: 'Wechat: 15891653276',
       help_step: 'Operation steps',
-      help_steps: [
-        'Click on <Select File> and choose to upload an image',
+      help_steps_2: [
+        'Click on [Select File] and choose to upload an image',
         'Set the pixel drawing size you need in the width and height column (the map drawing size must be 128 integer multiples)',
-        'Click on the <Settings> icon and select the orientation and rotation angle for placing pixel art in the game (default is map art)',
-        'Click on <Blocks> and choose the blocks that make up the pixel drawing',
-        'Click on <Make> and patiently wait for the generation to complete. You can click on the preview image to view a larger image',
-        'Click on <Litematic>, and the Litematic file will be automatically downloaded after generation is complete',
+        'Click on the [Settings] icon and select the orientation and rotation angle for placing pixel art in the game (default is map art)',
+        'Click on [Blocks] and choose the blocks that make up the pixel drawing',
+        'Click on [Make] and patiently wait for the generation to complete. You can click on the preview image to view a larger image',
+        'Click on [Litematic], and the Litematic file will be automatically downloaded after generation is complete',
         'Note: The manual construction function of the bedrock version will be launched later, or you can also search for the Litematic to bedrock version online'
       ],
+      help_steps_3: [
+        'Explanation: Currently, only. obj file is supported for conversion to .litematic file, and textures are not parsed',
+        'Click on [Select File] and choose to upload the. obj model file (you need to make it yourself in advance or collect and download it online. This is an example file:<a href="https://mcpixelart.com/preset/sona.obj">sona.obj</a>)',
+        'After uploading, you can preview the original model (left click to rotate, right click to translate, scroll wheel to adjust distance)',
+        'Set the size of the game model in the length, width, and height column (unit: grid, positive integer, not exceeding 1000)',
+        'Click on [Make] to see the rendering on the right',
+        'Click on [Litematic], wait for a moment and the .litematic file will be automatically downloaded',
+      ],
 
-      htitle: 'Minecraft Pixel Art Creator',
+      h2title: 'Minecraft Pixel Art Creator',
+      h3title: 'Minecraft Sculpture Creator',
       imgori: 'origin',
       imgres: 'preview',
       dlite: 'Litematic',
       make: 'Make',
       block: 'Blocks',
+      long: 'length',
       width: 'width',
       height: 'height',
       info: 'Info',
@@ -922,12 +933,12 @@ export default new Vuex.Store({
     lang_cn: {
       //alert()弹框内容
       a_selectpic: '请选择图片',
-      a_400: '上传服务器出错了，试着减小图片尺寸？',
+      a_400: '上传服务器出错了，试着减小尺寸？',
       a_500: '啊嘞？服务器传回了错误的参数，您可重试或联系站长',
       a_selectblock: '请先点击【选择方块】',
-      a_makepic: '请先点击【制作】',
+      a_makepic: '请先点击【生成】',
       a_finish: '制作完成',
-      a_uploadpic: '请先上传图片',
+      a_uploadpic: '请先上传文件',
       autodl: '没有自动下载？点击：',
       dldesp: '可以通过上面的地址在任何时间、设备上访问您的文件',
 
@@ -944,32 +955,43 @@ export default new Vuex.Store({
       help: '帮助',
 
       //help侧边栏
+      help_howtouse: '如何使用',
       help_contact: '联系方式',
       help_desp: '如您有任何建议和意见，请通过如下方式联系我:',
       help_mail: '邮箱: 19950083014@163.com',
       help_wechat: '微信: 15891653276',
       help_step: '操作步骤',
-      help_steps: [
+      help_steps_2: [
         '点击【选择文件】选择上传一张图片',
         '在宽高栏中设置你需要的像素画尺寸(地图画尺寸必须为128整数倍)',
         '点击【设置】图标，选择游戏内像素画放置的朝向、旋转角度(默认为地图画)',
         '点击【选择方块】，选择构成像素画的方块',
-        '点击【制作】，耐心等待生成完毕，可以点击预览图查看大图',
-        '点击【下载投影】，生成完毕后后将自动下载投影文件',
+        '点击【生成】，耐心等待生成完毕，可以点击预览图查看大图',
+        '点击【下载投影】，等待片刻后将自动下载投影文件',
         '注：之后会推出基岩版/网易版的手动搭建功能，您也可以在网上查找投影转基岩版/网易版'
+      ],
+      help_steps_3: [
+        '说明：目前只支持.obj文件转换为投影文件，不解析贴图',
+        '点击【选择文件】选择上传.obj模型文件(需要您自己提前制作或在网上搜集下载好。这是一个示例文件:<a href="https://mcpixelart.com/preset/sona.obj">娑娜.obj</a>)',
+        '上传完毕后即可预览原模型(左键旋转，右键平移，滚轮调整远近)',
+        '长宽高栏中设置游戏中模型的尺寸(单位：格，正整数，不超过1000)',
+        '点击【生成】，即可看到右边的效果图',
+        '点击【下载投影】，等待片刻后将自动下载投影文件',
       ],
     
       //联系方式
       con_mail: '19950083014@163.com',
       con_github: 'https://github.com/TgkRuobin/minecraft-pixel-art-creator',
 
-      //Dim2D
-      htitle: 'Minecraft像素画制作',
-      imgori: '原图',
-      imgres: '效果图',
+      //Dim2D、DIM3D
+      h2title: 'Minecraft 像素画制作',
+      h3title: 'Minecraft 雕塑制作',
+      imgori: '原文件',
+      imgres: '效果预览',
       dlite: '下载投影',
-      make: '制作',
+      make: '生成',
       block: '选择方块',
+      long: '长',
       width: '宽',
       height: '高',
 
