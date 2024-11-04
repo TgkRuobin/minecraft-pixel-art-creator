@@ -2,7 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 
 Vue.use(Vuex)
-
+import Cookies from 'js-cookie'
 export default new Vuex.Store({
   state: {
     mcblocks: [
@@ -899,7 +899,7 @@ export default new Vuex.Store({
         'Click on [Blocks] and choose the blocks that make up the pixel drawing',
         'Click on [Make] and patiently wait for the generation to complete. You can click on the preview image to view a larger image',
         'Click on [Litematic], and the Litematic file will be automatically downloaded after generation is complete',
-        'Note: The manual construction function of the bedrock version will be launched later, or you can also search for the Litematic to bedrock version online'
+        'Note: Are you playing the bedrock version/no litematic mod? Click on [Manual] to enter'
       ],
       help_steps_3: [
         'Explanation: Currently, only. obj file is supported for conversion to .litematic file, and textures are not parsed',
@@ -929,6 +929,22 @@ export default new Vuex.Store({
       selectblocks: 'Select the blocks that make up the pixel art.',
       selectall: 'select all',
       selectnone: 'unselect all',
+
+      bd_title: 'Minecraft BedRock Version/No litematic | Manually build',
+      bd_switch: 'Manual',
+      bd_get: 'Get',
+      bd_inputlink: 'Please fill in the file link or file name',
+      bd_nowline: 'Current index of rows : ',
+      bd_eachline: 'Number displayed per line:',
+      bd_size: 'Size',
+      bd_index: 'Index',
+      bd_name: 'Name',
+      bd_specific: 'Click on the block to view specific information',
+      bd_wrongfmt: 'Incorrect link format',
+      bd_404: 'The link does not exist',
+      bd_nores: 'No response received',
+      bd_wrong: 'Request Error',
+      bd_correctlink: 'Please fill in the correct link',
     },
     lang_cn: {
       //alert()弹框内容
@@ -968,7 +984,7 @@ export default new Vuex.Store({
         '点击【选择方块】，选择构成像素画的方块',
         '点击【生成】，耐心等待生成完毕，可以点击预览图查看大图',
         '点击【下载投影】，等待片刻后将自动下载投影文件',
-        '注：之后会推出基岩版/网易版的手动搭建功能，您也可以在网上查找投影转基岩版/网易版'
+        '注：基岩版/网易版/不使用投影的手动搭建功能已经上线，点击【手动搭建】进入'
       ],
       help_steps_3: [
         '说明：目前只支持.obj文件转换为投影文件，不解析贴图',
@@ -1006,6 +1022,23 @@ export default new Vuex.Store({
       selectblocks: '选择构成像素画的方块',
       selectall: '全选',
       selectnone: '全不选',
+
+      //bedrock
+      bd_title: 'Minecraft 基岩版/网易版/无投影 手动搭建',
+      bd_switch: '手动搭建',
+      bd_get: '获取',
+      bd_inputlink: '请填写文件链接或文件名',
+      bd_nowline: '当前行数 : ',
+      bd_eachline: '每行显示个数:',
+      bd_size: '尺寸',
+      bd_index: '序号',
+      bd_name: '名称',
+      bd_specific: '点击方块查看具体信息',
+      bd_wrongfmt: '错误的链接格式',
+      bd_404: '链接不存在',
+      bd_nores: '没有收到响应',
+      bd_wrong: '请求错误',
+      bd_correctlink: '请填写正确的连接',
     },
     //当前语言类型
     lang_now: 'lang_cn',
@@ -1015,11 +1048,14 @@ export default new Vuex.Store({
     changeLanguage(state, lang){
       if(lang){
         state.lang_now = lang
+        Cookies.set('hist-lang',lang, { expires: new Date('Sat, 01 Jan 2037 00:00:00 UTC') })
       }else{
         if(state.lang_now === 'lang_cn'){
           state.lang_now = 'lang_en'
+          Cookies.set('hist-lang',state.lang_now, { expires: new Date('Sat, 01 Jan 2037 00:00:00 UTC') })
         }else{
           state.lang_now = 'lang_cn'
+          Cookies.set('hist-lang',state.lang_now, { expires: new Date('Sat, 01 Jan 2037 00:00:00 UTC') })
         }
       }
     },

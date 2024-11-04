@@ -47,18 +47,23 @@
 
       <!-- 操作区 -->
       <div class="color-select">
+        <!-- 基岩版/网易版/手动搭建 -->
+        <button type="button" class="btn btn-outline-info" @click="$router.push('/bedrock')">
+          {{ lang.bd_switch }}
+        </button>
+        &nbsp;
         <!-- 下载投影 -->
         <button type="button" class="btn btn-outline-success" @click="getLitematica" :disabled="status.liteMaking">
           <!-- 根据状态决定是否显示“加载中” -->
           <span v-show="status.liteMaking" class="spinner-border spinner-border-sm" aria-hidden="true"></span>
-          <span v-show="status.liteMaking" role="status">{{ this.lang.loading }}</span>
+          <span v-show="status.liteMaking" role="status">{{ lang.loading }}</span>
           <span v-show="!status.liteMaking">{{ lang.dlite }}</span>
         </button>
         &nbsp;
         <!-- 制作像素画 -->
         <button type="button" class="btn btn-outline-primary" @click="make" :disabled="status.artMaking">
           <span v-show="status.artMaking" class="spinner-border spinner-border-sm" aria-hidden="true"></span>
-          <span v-show="status.artMaking" role="status">{{ this.lang.loading }}</span>
+          <span v-show="status.artMaking" role="status">{{ lang.loading }}</span>
           <span v-show="!status.artMaking">{{ lang.make }}</span>
         </button>
         &nbsp;
@@ -548,13 +553,13 @@ export default {
     },
     'selectedBlocks': {
       handler(stb) {
-        Cookies.set('hist-bs',JSON.stringify(stb))
+        Cookies.set('hist-bs',JSON.stringify(stb), { expires: new Date('Sat, 01 Jan 2037 00:00:00 UTC') })
       }
     },
     'size': {
       deep: true,
       handler(sz) {
-        Cookies.set('hist-sz',JSON.stringify(sz))
+        Cookies.set('hist-sz',JSON.stringify(sz), { expires: new Date('Sat, 01 Jan 2037 00:00:00 UTC') })
       }
     },
   },
@@ -656,7 +661,7 @@ export default {
     transition: transform .3s ease;
   }
   .input-group{
-    width: 50%;
+    width: 36%;
     height: 90%;
     left: 0;
     position: absolute;
