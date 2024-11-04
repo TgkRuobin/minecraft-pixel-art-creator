@@ -72,7 +72,7 @@
           <button @click="generateVoxel" type="button" class="btn btn-primary">{{ lang.make }}</button>
           <button @click="getLitematic" type="button" class="btn btn-info" :disabled="status.liteMaking">
             <span v-show="status.liteMaking" class="spinner-border spinner-border-sm" aria-hidden="true"></span>
-            <span v-show="status.liteMaking" role="status">{{ this.lang.loading }}</span>
+            <span v-show="status.liteMaking" role="status">{{ lang.loading }}</span>
             <span v-show="!status.liteMaking">{{ lang.dlite }}</span>
           </button>
           <!-- <div class="input-group-text">
