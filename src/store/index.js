@@ -910,6 +910,9 @@ export default new Vuex.Store({
         'Click on [Litematic], wait for a moment and the .litematic file will be automatically downloaded',
       ],
 
+      fb_version: 'Version',
+      fb_privacy: 'Privacy',
+
       h2title: 'Minecraft Pixel Art Creator',
       h3title: 'Minecraft Sculpture Creator',
       imgori: 'origin',
@@ -994,6 +997,10 @@ export default new Vuex.Store({
         '点击【生成】，即可看到右边的效果图',
         '点击【下载投影】，等待片刻后将自动下载投影文件',
       ],
+
+      //Footbar
+      fb_version: '版本',
+      fb_privacy: '隐私政策',
     
       //联系方式
       con_mail: '19950083014@163.com',
@@ -1042,6 +1049,8 @@ export default new Vuex.Store({
     },
     //当前语言类型
     lang_now: 'lang_cn',
+    //当前版本
+    version: '2.3'
   },
   mutations: {
     //切换语言 如未指定lang则切换为另一种语音

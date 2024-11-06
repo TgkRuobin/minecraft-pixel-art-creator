@@ -12,10 +12,23 @@ export default {
     if (!Cookies.get('hist-id')) {
       Cookies.set('hist-id',this.generateId(), { expires: new Date('Sat, 01 Jan 2037 00:00:00 UTC') })
     }
+
     const lang = Cookies.get('hist-lang')
-    //如果不是中文则切换到英文 (默认为中文)
-    if (lang !== 'lang_cn') {
-      this.changeLanguage()
+    if (lang) {
+      this.changeLanguage(lang)
+    } else {
+      // 如果cookie里没有hist-lang 需要进行初始化
+      const browserLang = navigator.language || navigator.userLanguage
+      if (!browserLang) {
+        //如果浏览器不支持navigtor.language 设置为中文
+        this.changeLanguage('lang_cn')
+      }else if (browserLang.toLowerCase().includes('zh')) {
+        //如果包含zh字样为中文
+        this.changeLanguage('lang_cn')
+      }else {
+        // 其他情况都为英文
+        this.changeLanguage('lang_en')
+      }
     }
     
   },
@@ -37,5 +50,6 @@ export default {
   #app{
     position: relative;
     /* overflow: hidden */
+    width: 100%;
   }
 </style>

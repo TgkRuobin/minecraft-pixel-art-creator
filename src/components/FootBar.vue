@@ -8,17 +8,22 @@
       <a href="https://beian.miit.gov.cn" target="_blank">蜀ICP备2024071913号-2</a>
     </div>
     <div>
-      <a href="https://mcpixelart.com/version.html">Version 2.2</a>
+      <a href="https://mcpixelart.com/version.html">{{ `${lang.fb_version} ${version}` }}</a>
     </div>
     <div>
-      <a href="https://mcpixelart.com/Privacy.html">Privacy</a>
+      <a href="https://mcpixelart.com/Privacy.html">{{ lang.fb_privacy }}</a>
     </div>
   </footer>
 </template>
 
 <script>
+import { mapGetters,mapState } from 'vuex'
 export default {
   name: 'FootBar',
+  computed: {
+    ...mapGetters(['lang']),
+    ...mapState(['version']),
+  },
 }
 </script>
 
@@ -26,8 +31,9 @@ export default {
   footer{
     position: absolute;
     bottom: 5px;
-    width: auto;
-    height: 32px;
+    /* width: auto; */
+    min-height: 32px;
+    max-height: 64px;
     left: 50%;
     transform: translateX(-50%);
 
@@ -61,6 +67,15 @@ export default {
     outline: none;
     color:rgb(238, 43, 137);
     text-decoration: none;
+  }
+
+  @media only screen and (max-width: 800px) {
+    footer {
+      left: auto;
+      transform: none;
+      height: auto;
+      max-height: none;
+    }
   }
   
 </style>

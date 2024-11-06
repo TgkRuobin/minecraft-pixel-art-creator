@@ -50,7 +50,7 @@
 
 <script>
 import FootBar from '../components/FootBar.vue'
-import { mapGetters,mapMutations } from 'vuex';
+import { mapGetters,mapMutations } from 'vuex'
 export default {
   name: 'HomePage',
   components: {
@@ -66,13 +66,13 @@ export default {
 </script>
 
 <style scoped>
-  .outer{
+  .outer {
     width: 100%;
     height: 100vh;
     position: relative;
     overflow: hidden;
   }
-  .nav{
+  .nav {
     position: fixed;
     left: 50%;
     top: 20px;
@@ -90,7 +90,7 @@ export default {
 
     z-index: 1;
   }
-  .nav-box{
+  .nav-box {
     display: flex;
     padding: 10px;
     flex-flow: row nowrap;
@@ -101,7 +101,7 @@ export default {
     white-space: nowrap;
     width: 100%;
   }
-  main{
+  main {
     width: 100%;
     height: 100%;
     position: relative;
@@ -111,7 +111,7 @@ export default {
     justify-content: center;
   }
 
-  @keyframes slide{
+  @keyframes slide {
     0% {
       transform: translate(-160px,-160px);
     }
@@ -119,7 +119,7 @@ export default {
       transform: translate(160px,160px);
     }
   }
-  main .bgc{
+  main .bgc {
     position: absolute;
     top: -160px;
     left: -160px;
@@ -130,14 +130,14 @@ export default {
     z-index: -1;
   }
 
-  .container{
+  .container {
     width: auto;
     display: flex;
     justify-content: center;
     flex-flow: row wrap;
   }
 
-  .box{
+  .box {
     margin: 40px;
     border: none;
     border-radius: 16px;
@@ -149,25 +149,25 @@ export default {
     cursor: pointer;
   }
 
-  .box img{
+  .box img {
     width: 100%;
     height: 100%;
     transition: transform .3s ease;
   }
-  .borderShade{
+  .borderShade {
     box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.7)
   }
 
-  .box:hover img{
+  .box:hover img {
     transform: scale(1.1);
   }
 
-  .box:hover .shade{
+  .box:hover .shade {
     height: 50%;
     top: 50%;
   }
   
-  .box .shade{
+  .box .shade {
     top: 60%;
     left: 0;
     width: 100%;
@@ -191,5 +191,18 @@ export default {
     top: 0;
     width: 64px;
     height: 64px;
+  }
+
+  @media only screen and (max-width: 800px) {
+    .nav {
+      h4 {
+        display: none;  
+      }
+    }
+
+    .box {
+      width: 46%;
+      height: 30vh;
+    }
   }
 </style>

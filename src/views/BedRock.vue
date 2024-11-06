@@ -41,13 +41,17 @@
     <div class="edit-outer">
       <!-- 控制区 -->
       <div class="edit-ctl">
+        <!-- 现在显示的第几行 -->
         <span>{{ lang.bd_nowline }}</span>
         <button @click="edit.line = limit(edit.line - 1,edit.lineMin,edit.lineMax)">-</button>
         <input type="number" v-model="edit.line" :min="edit.lineMin" :max="edit.lineMax">
         <button @click="edit.line = limit(edit.line + 1,edit.lineMin,edit.lineMax)">+</button>
+        <!-- 二维表每行显示个数 -->
         <span>{{ lang.bd_eachline }}</span>
-        <input type="number" v-model="edit.n" min="0">
+        <input type="number" v-model="edit.ns" min="0">
+        <!-- 图片尺寸 -->
         <span>{{ `${lang.bd_size}:${size.height}×${size.width}` }}</span>
+        <!-- 鼠标点击小方块后显示详情信息 -->
         <span style="color:coral;">{{ status.selectedBlock }}</span>
       </div>
       <!-- 工作区 -->
@@ -56,7 +60,7 @@
       <div class="edit-wk">
         <div class="edit-yoko">
           <!-- 左上角的占位空间 -->
-          <div class="edit-lt"></div>
+          <div class="edit-lt"><img style="width: 32px;height: 32px;"></div>
           <!-- 右上角显示列标签 -->
           <div class="edit-rt" :style="`width: ${edit.n * 40 - 8}px;`">
             <div class="block" v-for="r in getRow" :key="'r'+r">
@@ -72,15 +76,17 @@
             </div>
           </div>
           <!-- 右下角显示oneline -->
-          <div class="edit-rb" :style="`width: ${edit.n * 40 - 8}px;`">
-            <!-- 每个方块32*32大小 -->
-            <div 
-              class="colorShow" 
-              v-for="(item,index) in oneline" 
-              :key="`block${item}${index}`" 
-              :style="`background-position: -${offsetMap[item].x}px -${offsetMap[item].y}px;`"
-              @click="status.selectedBlock=`${lang.bd_index}:${index+1} ${lang.bd_name}:${lang_now === 'lang_cn' ? nameMap[item] : item}`"
-            >
+          <div class="edit-rb">
+            <div class="tableLine" v-for="(tLine,tLineIndex) in onelineToTable" :key="`tl${tLineIndex}`">
+              <!-- 每个方块32*32大小 -->
+              <div 
+                class="colorShow" 
+                v-for="(item,index) in tLine" 
+                :key="`block${item}${index}`" 
+                :style="`background-position: -${offsetMap[item].x}px -${offsetMap[item].y}px;`"
+                @click="status.selectedBlock=`${lang.bd_index}:${index+1+tLineIndex*edit.n} ${lang.bd_name}:${lang_now === 'lang_cn' ? nameMap[item] : item}`"
+              >
+              </div>
             </div>
           </div>
         </div>
@@ -136,7 +142,8 @@ export default {
         line: 0,
         lineMin: 0,
         lineMax: 0,
-        //一行显示n个
+        //一行显示n个 输入框绑定ns watch块中验证无误后同步到n
+        ns: 16,
         n: 16,
       },
     }
@@ -306,20 +313,33 @@ export default {
         //得到该行
         const thisline = this.imageArray[lineNum]
         return thisline
-        //该行方块根据每行显示的个数制作为二维表
-        // const line = []
-        // let l = []
-        // for (let i = 0;i < thisline.length;i++) {
-        //   l.push(thisline[i])
-        //   if (l.length >= this.edit.n) {
-        //     line.push(l)
-        //     l = []
-        //   }
-        // }
-        // return line
       } else {
         return []
       }
+    },
+    //把oneline转换为宽度为edit.n的二维数组
+    onelineToTable() {
+      //原始数据
+      const oneline = this.oneline
+      //二维表
+      const table = []
+      //记录二维表中的一行
+      let tableLine = []
+      //计数器 每次满edit.n后都将tableLine添加到table中
+      let count = 0
+      for (let element of oneline) {
+        tableLine.push(element)
+        count = (count + 1) % this.edit.n
+        if (count === 0) {
+          table.push(tableLine)
+          tableLine = []
+        }
+      }
+      if (tableLine.length > 0) {
+        // 最后一行剩余的也要push进去
+        table.push(tableLine)
+      }
+      return table
     },
     //得到oneline的行数height和列数width(即edit.n)
     onelineSize() {
@@ -356,19 +376,30 @@ export default {
   watch: {
     url(u) {
       Cookies.set('hist-bd-url',u, { expires: new Date('Sat, 01 Jan 2037 00:00:00 UTC') })
+    },
+    'edit.ns'(ns) {
+      if (ns > 0) {
+        //必须为正整数
+        this.edit.n = ns
+      }
     }
   }
 }
 </script>
 
-<style scoped>
+<style lang="less" scoped>
+  outer {
+    width: 100%;
+  }
 
   .edit-ctl {
     display: flex;
-    flex-flow: row nowrap;
+    flex-flow: row wrap;
     align-items: center;
     gap: 8px;
     margin: 10px 0;
+    white-space: nowrap;
+    
     button {
       border: solid 1px slateblue;
       padding: 2px 8px;
@@ -411,10 +442,17 @@ export default {
 
       .edit-rb {
         display: flex;
-        flex-flow: row wrap;
+        flex-flow: column nowrap;
         justify-content: space-between;
         gap: 8px;
         background-color: #ffdec3;
+      }
+
+      .tableLine {
+        display: flex;
+        flex-flow: row nowrap;
+        justify-content: space-around;
+        gap: 8px;
       }
 
       .block {
@@ -426,9 +464,16 @@ export default {
 
   .colorShow {
     display: inline-block;
-    width: 30px;
-    height: 30px;
+    width: 32px;
+    height: 32px;
     background-image: url('@/assets/img/BlockCSS2.png');
     border: solid 1px black;
+    box-sizing: border-box;
+  }
+
+  @media only screen and (max-width: 800px) {
+    .navbar-brand {
+      font-size: 16px;
+    }
   }
 </style>

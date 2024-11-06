@@ -103,4 +103,13 @@ export default {
       transform: translateX(-1120px);
     }
   }
+
+  @media only screen and (max-width: 800px) {
+    nav {
+      width: 100%;
+      h4 {
+        display: none;
+      }
+    }
+  }
 </style>

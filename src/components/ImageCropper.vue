@@ -1,6 +1,14 @@
 <template>
   <div class="image-outer">
-    <div ref="imgsmallcon" class="image-small-container" @mousedown="mousedown" @mousemove="mousemove" @mouseup="mouseup">
+    <div ref="imgsmallcon" 
+      class="image-small-container" 
+      @mousedown="mousedown" 
+      @mousemove="mousemove" 
+      @mouseup="mouseup" 
+      @touchstart.prevent="mousedown({button:0,clientX:$event.touches[0].clientX,clientY:$event.touches[0].clientY})" 
+      @touchmove.prevent="mousemove({button:0,clientX:$event.touches[0].clientX,clientY:$event.touches[0].clientY})" 
+      @touchend.prevent="mouseup"
+    >
       <!-- 小图显示全部 -->
       <img ref="imgsmall" class="image-small" :src="imageSrc">
       <!-- 遮罩表示大图显示的区域 -->
