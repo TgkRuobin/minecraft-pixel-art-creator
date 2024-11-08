@@ -869,7 +869,7 @@ export default new Vuex.Store({
     lang_en: {
       a_selectpic: 'Please select a picture',
       a_400: 'Upload error,is the size too large?',
-      a_500: 'Received unexcepted data.Try again or contact me',
+      a_500: 'Webserver is in trouble.Please try again or contact me',
       a_selectblock: 'Please click [Select Blocks]',
       a_makepic: 'Please click [Make]',
       a_finish: 'Success',
@@ -923,6 +923,12 @@ export default new Vuex.Store({
       long: 'length',
       width: 'width',
       height: 'height',
+      enhance: 'Enhanced map',
+      enhance_info: 'Enhanced map drawing will use 180 primary colors for richer colors, but the map drawing will have undulating structures and will no longer be flat.',
+      enhance_alert: '[Enhanced Map] The size should not exceed (3 * 128) × (2 * 128), and server production may take a few minutes. Please be patient!',
+      enhance_sizeout: '[Enhanced Map] The size should not exceed (3 * 128) × (2 * 128)',
+      enhance_sizealt: '[Enhanced Map] If the size exceeds (3 * 128) × (2 * 128), you can preview the rendering on your own computer, but the server will not accept download requests',
+
       info: 'Info',
       i_ge: '',
       i_zu: 'stack',
@@ -953,7 +959,7 @@ export default new Vuex.Store({
       //alert()弹框内容
       a_selectpic: '请选择图片',
       a_400: '上传服务器出错了，试着减小尺寸？',
-      a_500: '啊嘞？服务器传回了错误的参数，您可重试或联系站长',
+      a_500: '啊嘞？服务器出错了，您可重试或联系站长',
       a_selectblock: '请先点击【选择方块】',
       a_makepic: '请先点击【生成】',
       a_finish: '制作完成',
@@ -1017,6 +1023,11 @@ export default new Vuex.Store({
       long: '长',
       width: '宽',
       height: '高',
+      enhance: '加强地图画',
+      enhance_info: '【加强地图画】的色彩更鲜艳，作品将具有上下起伏的结构，不再平整',
+      enhance_alert: '【加强地图画】的尺寸不能超过(3*128)×(2*128)，不支持手动搭建，服务器制作需要几分钟，请耐心等待！',
+      enhance_sizeout: '【加强地图画】尺寸不能超过(3*128)×(2*128)',
+      enhance_sizealt: '【加强地图画】尺寸超过了(3*128)×(2*128)，您可在自己电脑上预览效果图，但服务器不会接受下载请求',
 
       //Dim2D统计信息
       info: '统计信息',
@@ -1050,7 +1061,7 @@ export default new Vuex.Store({
     //当前语言类型
     lang_now: 'lang_cn',
     //当前版本
-    version: '2.3'
+    version: '2.4'
   },
   mutations: {
     //切换语言 如未指定lang则切换为另一种语音

@@ -47,44 +47,62 @@
 
       <!-- 操作区 -->
       <div class="color-select">
-        <!-- 基岩版/网易版/手动搭建 -->
-        <button type="button" class="btn btn-outline-info" @click="$router.push('/bedrock')">
-          {{ lang.bd_switch }}
-        </button>
-        &nbsp;
-        <!-- 下载投影 -->
-        <button type="button" class="btn btn-outline-success" @click="getLitematica" :disabled="status.liteMaking">
-          <!-- 根据状态决定是否显示“加载中” -->
-          <span v-show="status.liteMaking" class="spinner-border spinner-border-sm" aria-hidden="true"></span>
-          <span v-show="status.liteMaking" role="status">{{ lang.loading }}</span>
-          <span v-show="!status.liteMaking">{{ lang.dlite }}</span>
-        </button>
-        &nbsp;
-        <!-- 制作像素画 -->
-        <button type="button" class="btn btn-outline-primary" @click="make" :disabled="status.artMaking">
-          <span v-show="status.artMaking" class="spinner-border spinner-border-sm" aria-hidden="true"></span>
-          <span v-show="status.artMaking" role="status">{{ lang.loading }}</span>
-          <span v-show="!status.artMaking">{{ lang.make }}</span>
-        </button>
-        &nbsp;
-        <!-- 选择方块 -->
-        <button class="btn btn-outline-warning" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample" aria-controls="offcanvasExample">
-          {{ lang.block }}
-        </button>
-        &nbsp;
-        <!-- 设置 -->
-        <button type="button" class="btn btn-setting" @click="openSetting">
-          <svg t="1729768660793" class="svg-setting" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="4540" width="26" height="26"><path d="M919.6 405.6l-57.2-8c-12.7-1.8-23-10.4-28-22.1-11.3-26.7-25.7-51.7-42.9-74.5-7.7-10.2-10-23.5-5.2-35.3l21.7-53.5c6.7-16.4 0.2-35.3-15.2-44.1L669.1 96.6c-15.4-8.9-34.9-5.1-45.8 8.9l-35.4 45.3c-7.9 10.2-20.7 14.9-33.5 13.3-14-1.8-28.3-2.8-42.8-2.8-14.5 0-28.8 1-42.8 2.8-12.8 1.6-25.6-3.1-33.5-13.3l-35.4-45.3c-10.9-14-30.4-17.8-45.8-8.9L230.4 168c-15.4 8.9-21.8 27.7-15.2 44.1l21.7 53.5c4.8 11.9 2.5 25.1-5.2 35.3-17.2 22.8-31.7 47.8-42.9 74.5-5 11.8-15.3 20.4-28 22.1l-57.2 8C86 408 72.9 423 72.9 440.8v142.9c0 17.7 13.1 32.7 30.6 35.2l57.2 8c12.7 1.8 23 10.4 28 22.1 11.3 26.7 25.7 51.7 42.9 74.5 7.7 10.2 10 23.5 5.2 35.3l-21.7 53.5c-6.7 16.4-0.2 35.3 15.2 44.1L354 927.8c15.4 8.9 34.9 5.1 45.8-8.9l35.4-45.3c7.9-10.2 20.7-14.9 33.5-13.3 14 1.8 28.3 2.8 42.8 2.8 14.5 0 28.8-1 42.8-2.8 12.8-1.6 25.6 3.1 33.5 13.3l35.4 45.3c10.9 14 30.4 17.8 45.8 8.9l123.7-71.4c15.4-8.9 21.8-27.7 15.2-44.1l-21.7-53.5c-4.8-11.8-2.5-25.1 5.2-35.3 17.2-22.8 31.7-47.8 42.9-74.5 5-11.8 15.3-20.4 28-22.1l57.2-8c17.6-2.5 30.6-17.5 30.6-35.2V440.8c0.2-17.8-12.9-32.8-30.5-35.2z m-408 245.5c-76.7 0-138.9-62.2-138.9-138.9s62.2-138.9 138.9-138.9 138.9 62.2 138.9 138.9-62.2 138.9-138.9 138.9z" fill="" p-id="4541"></path>
-          </svg>
-        </button>
-        <!-- 编辑宽高 -->
+        <!-- 编辑宽高区 -->
         <div class="input-group">
           <span class="input-group-text">{{ lang.width }}</span>
           <input type="text" name="w" class="form-control" v-model="width">
           <span class="input-group-text">{{ lang.height }}</span>
           <input type="text" name="h" class="form-control" v-model="height">
+          <!-- 加强地图画复选框 -->
+          <div class="input-group-text">
+            <input class="form-check-input mt-0" type="checkbox" v-model="status.enhance" id="isEnhance">
+            <label for="isEnhance">{{ lang.enhance }}</label>
+          </div>
         </div>
-      </div>
+        <!-- 操作按钮区 -->
+        <div class="buttons-group">
+          <!-- 基岩版/网易版/手动搭建 -->
+          <button type="button" class="btn btn-outline-info" @click="$router.push('/bedrock')">
+            {{ lang.bd_switch }}
+          </button>
+          &nbsp;
+          <!-- 下载投影 -->
+          <button type="button" class="btn btn-outline-success" @click="getLitematica" :disabled="status.liteMaking">
+            <!-- 根据状态决定是否显示“加载中” -->
+            <span v-show="status.liteMaking" class="spinner-border spinner-border-sm" aria-hidden="true"></span>
+            <span v-show="status.liteMaking" role="status">{{ lang.loading }}</span>
+            <span v-show="!status.liteMaking">{{ lang.dlite }}</span>
+          </button>
+          &nbsp;
+          <!-- 制作像素画 -->
+          <button type="button" class="btn btn-outline-primary" @click="status.enhance ? makeBd() : make()" :disabled="status.artMaking">
+            <span v-show="status.artMaking" class="spinner-border spinner-border-sm" aria-hidden="true"></span>
+            <span v-show="status.artMaking" role="status">{{ lang.loading }}</span>
+            <span v-show="!status.artMaking">{{ lang.make }}</span>
+          </button>
+          &nbsp;
+          <!-- 选择方块 -->
+          <button class="btn btn-outline-warning" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample" aria-controls="offcanvasExample">
+            {{ lang.block }}
+          </button>
+          &nbsp;
+          <!-- 设置 -->
+          <button type="button" class="btn btn-setting" @click="openSetting">
+            <svg t="1729768660793" class="svg-setting" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="4540" width="26" height="26"><path d="M919.6 405.6l-57.2-8c-12.7-1.8-23-10.4-28-22.1-11.3-26.7-25.7-51.7-42.9-74.5-7.7-10.2-10-23.5-5.2-35.3l21.7-53.5c6.7-16.4 0.2-35.3-15.2-44.1L669.1 96.6c-15.4-8.9-34.9-5.1-45.8 8.9l-35.4 45.3c-7.9 10.2-20.7 14.9-33.5 13.3-14-1.8-28.3-2.8-42.8-2.8-14.5 0-28.8 1-42.8 2.8-12.8 1.6-25.6-3.1-33.5-13.3l-35.4-45.3c-10.9-14-30.4-17.8-45.8-8.9L230.4 168c-15.4 8.9-21.8 27.7-15.2 44.1l21.7 53.5c4.8 11.9 2.5 25.1-5.2 35.3-17.2 22.8-31.7 47.8-42.9 74.5-5 11.8-15.3 20.4-28 22.1l-57.2 8C86 408 72.9 423 72.9 440.8v142.9c0 17.7 13.1 32.7 30.6 35.2l57.2 8c12.7 1.8 23 10.4 28 22.1 11.3 26.7 25.7 51.7 42.9 74.5 7.7 10.2 10 23.5 5.2 35.3l-21.7 53.5c-6.7 16.4-0.2 35.3 15.2 44.1L354 927.8c15.4 8.9 34.9 5.1 45.8-8.9l35.4-45.3c7.9-10.2 20.7-14.9 33.5-13.3 14 1.8 28.3 2.8 42.8 2.8 14.5 0 28.8-1 42.8-2.8 12.8-1.6 25.6 3.1 33.5 13.3l35.4 45.3c10.9 14 30.4 17.8 45.8 8.9l123.7-71.4c15.4-8.9 21.8-27.7 15.2-44.1l-21.7-53.5c-4.8-11.8-2.5-25.1 5.2-35.3 17.2-22.8 31.7-47.8 42.9-74.5 5-11.8 15.3-20.4 28-22.1l57.2-8c17.6-2.5 30.6-17.5 30.6-35.2V440.8c0.2-17.8-12.9-32.8-30.5-35.2z m-408 245.5c-76.7 0-138.9-62.2-138.9-138.9s62.2-138.9 138.9-138.9 138.9 62.2 138.9 138.9-62.2 138.9-138.9 138.9z" fill="" p-id="4541"></path>
+            </svg>
+          </button>
+        </div>
+
+        <!-- 地图画enhance功能的提示 -->
+        <div class="alert alert-info" role="alert">
+          {{ lang.enhance_info }}
+        </div>
+        <div class="alert alert-warning" role="alert">
+          {{ lang.enhance_alert }}
+        </div>
+
+      </div> 
+
       <!-- 方块选择侧边栏 -->
       <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
         <div class="offcanvas-header">
@@ -151,13 +169,14 @@
           </div>
         </div>
       </div>
-
+      <!-- 显示帮助 -->
       <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasHelp2" aria-labelledby="offcanvasHelpLabel">
         <div class="offcanvas-header">
           <h4 class="offcanvas-title"><b>{{ lang.help }}</b></h4>
           <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
         </div>
         <div class="offcanvas-body">
+          <!-- 联系方式 -->
           <h5><i>{{ lang.help_contact }}</i></h5>
           <p>
             {{ lang.help_desp }}
@@ -166,6 +185,7 @@
             <br>
             {{ lang.help_wechat }}
           </p>
+          <!-- 操作步骤 -->
           <h5><i>{{ lang.help_step }}</i></h5>
           <p>
             <ol>
@@ -232,6 +252,8 @@ export default {
         // 2.alert
         // 3.error
         alertIcon: 0,
+        //是否采用加强地图画
+        enhance: false,
       },
       //提供给子组件的图片数据
       imgPreview: '',
@@ -240,6 +262,10 @@ export default {
         direct: 'z',
         degree: 0,
       },
+      //方块颜色和方块的映射
+      enhancedColors: {},
+      //颜色修饰记录表
+      modifiedInfo: [],
       
     }
   },
@@ -252,6 +278,13 @@ export default {
     this.mcblocks.map(block=>block.bclass.map(bc=>{
       bc.count = 0
       bc.color_rgb = this.hexToRgb(bc.color)
+
+      //创建方块颜色和方块的映射
+      this.enhancedColors[bc.minecraft] = {
+        low: this.hexToRgb(bc.low),
+        normal: this.hexToRgb(bc.normal),
+        high: this.hexToRgb(bc.high),
+      }
     }))
 
     //加载历史习惯数据
@@ -392,6 +425,117 @@ export default {
       }
       return closestBClass
     },
+    //加强地图画版 找到最接近给定颜色的方块和修饰
+    closestColorBd(color) {
+      //比较c1(low),c2(normal),c3(high)颜色 返回最接近c的色差距离和修饰
+      const compare = (c,c1,c2,c3) => {
+        let d1 = Math.sqrt(
+          Math.pow(c.r - c1.r, 2) +  
+          Math.pow(c.g - c1.g, 2) +  
+          Math.pow(c.b - c1.b, 2)  
+        )
+        let d2 = Math.sqrt(
+          Math.pow(c.r - c2.r, 2) +  
+          Math.pow(c.g - c2.g, 2) +  
+          Math.pow(c.b - c2.b, 2)  
+        )
+        let d3 = Math.sqrt(
+          Math.pow(c.r - c3.r, 2) +  
+          Math.pow(c.g - c3.g, 2) +  
+          Math.pow(c.b - c3.b, 2)  
+        )
+        if (d2 <= d1 && d2 <= d3) return {distance: d2,modify: 'normal'}
+        if (d1 <= d2 && d1 <= d3) return {distance: d1,modify: 'low'}
+        if (d3 <= d2 && d3 <= d1) return {distance: d3,modify: 'high'}
+      }
+
+      let minDistance = 9999999
+      let closestBClass = null
+      let closestModify = ''
+      for(let mcb of this.mcblocks){
+        for(let bc of mcb.bclass){
+          if(!bc.select) continue
+          const ec = this.enhancedColors[bc.minecraft]
+          const cmp = compare(color,ec.low,ec.normal,ec.high)
+          if(cmp.distance < minDistance) { 
+            //选出最小色差的方块
+            minDistance = cmp.distance
+            closestModify = cmp.modify
+            closestBClass = bc
+          }
+        }
+      }
+      return {bc: closestBClass, modify: closestModify}
+    },
+    //加强地图画版 制作
+    makeBd() {
+      //至少选择一个方块
+      if(!this.isBlockSelected){
+        this.alert(this.lang.a_selectblock)
+        return
+      }
+      if (parseInt(this.width)*parseInt(this.height) > 128*3*128*2) {
+        this.alert(this.lang.enhance_sizealt)
+      }
+      //必须已经读取本地图片 并且选中了enhance复选框
+      if(this.imageData && this.status.enhance){
+        this.status.artMaking = true
+        const canvas = this.$refs.cmc
+        canvas.width = parseInt(this.width)
+        canvas.height = parseInt(this.height)
+        const ctx = canvas.getContext('2d')
+        //创建一样大小的图用来显示预览图
+        let newImage = ctx.createImageData(this.imageData.width,this.imageData.height)
+        //创建一个和原图一样大小的矩阵用来存储方块种类
+        this.posInfo = Array.from({ length: parseInt(this.height) }, () =>
+          Array(parseInt(this.width)).fill('')
+        )
+        //用来存储修饰符
+        this.modifiedInfo = Array.from({ length: parseInt(this.height) }, () =>
+          Array(parseInt(this.width)).fill('')
+        )
+        //重置计数
+        for(let mcb of this.mcblocks){
+          for(let bc of mcb.bclass){
+            bc.count = 0
+          }
+        }
+        //遍历原图每个像素
+        for (let y = 0; y < newImage.height; y++) {
+          for (let x = 0; x < newImage.width; x++) {
+            const index = (y * newImage.width + x) * 4 
+            const r = this.imageData.data[index]
+            const g = this.imageData.data[index + 1]
+            const b = this.imageData.data[index + 2]
+
+            let ccbd = this.closestColorBd({r,g,b})
+            this.modifiedInfo[y][x] = ccbd.modify
+            //通过ccbd给的方块名和修饰找到最终的rgb色值
+            const newcolor = this.enhancedColors[ccbd.bc.minecraft][ccbd.modify]
+            newImage.data[index] = newcolor.r
+            newImage.data[index + 1] = newcolor.g
+            newImage.data[index + 2] = newcolor.b
+            newImage.data[index + 3] = 255
+            ccbd.bc.count++
+            this.posInfo[y][x] = ccbd.bc.minecraft
+          }
+        }
+        ctx.putImageData(newImage, 0, 0)
+
+        //统计方块
+        this.usedBlock.splice(0)
+        for(let mcb of this.mcblocks){
+          for(let bc of mcb.bclass){
+            if(!bc.select || bc.count === 0) continue
+            this.usedBlock.push(bc)
+          }
+        }
+        this.alert(this.lang.a_finish,1)
+      }else{
+        this.alert(this.lang.a_uploadpic)
+      }
+      this.status.artMaking = false
+    },
     //十六进制颜色转rgb
     hexToRgb(hex) {  
       hex = hex.replace('#', '') 
@@ -405,6 +549,7 @@ export default {
     },
     //制作像素画
     make() {
+      //至少选择一个方块
       if(!this.isBlockSelected){
         this.alert(this.lang.a_selectblock)
         return
@@ -418,7 +563,7 @@ export default {
         let newImage = ctx.createImageData(this.imageData.width,this.imageData.height)
 
         this.posInfo = Array.from({ length: parseInt(this.height) }, () =>
-          Array(parseInt(this.width)).fill('')  
+          Array(parseInt(this.width)).fill('')
         )
         //重置计数
         for(let mcb of this.mcblocks){
@@ -468,10 +613,9 @@ export default {
       }
       this.status.artMaking = false
     },
-    downloadFile(fname){
+    downloadFile(href){
       //隐藏的a标签用于触发自动下载
       const a = document.createElement('a')
-      const href = 'https://mcpixelart.com/lite/' + fname
       a.href = href
       a.style.display = 'none'
       document.querySelector('body').appendChild(a)
@@ -480,16 +624,82 @@ export default {
       //模态框里的a标签为手动下载
       this.alert(`${this.lang.autodl} <br><a href="${href}">${href}</a><br> ${this.lang.dldesp}`,1)
     },
+    //结合posInfo方块信息和modifiedInfo修饰符 得到3D的方块位置信息 发送给服务器的3D转换接口
+    getEnhancedPostData() {
+      //记录y坐标上的相对位置
+      //从南向北开始记录
+      //最南边的一行y固定为0
+      let relativeY = [new Array(this.posInfo[0].length).fill(0)]
+      for (let y = this.posInfo.length - 2;y >= 0;y--) {
+        //根据y+1这一行 确定y这一行应该+1还是-1还是0
+        const relativeOneline = this.modifiedInfo[y+1].map(v => {
+          switch (v) {
+            case 'low': return 1
+            case 'high': return -1
+            default: return 0
+          }
+        })
+        //在y+1这一行的基础上加上y这一行的增量
+        relativeY.push(relativeOneline.map((rv,ri) => rv + relativeY[relativeY.length - 1][ri]))
+      }
+      //统计最高和最低点
+      let rMin = 0,rMax = 0
+      relativeY.map(rl => rl.map(h => {
+        if (h < rMin) rMin = h
+        if (h > rMax) rMax = h
+      }))
+      //大于等于0
+      relativeY = relativeY.map(rl => rl.map(h => h - rMin))
+      relativeY.reverse()
+      //原本发送给服务器方块信息art 高度图rel 尺寸size
+      const middle = {
+        rel: relativeY,
+        art: this.posInfo,
+        size: {
+          width: this.posInfo[0].length,
+          length: this.posInfo.length,
+          height: rMax - rMin + 1
+        }
+      }
+      // 进行预处理后再发送给服务器 减少服务器压力
+      // 将三维数据化为一维流
+      let pipe = []
+      for (let x = 0;x < middle.size.length;x++) {
+        for (let y = 0;y < middle.size.width;y++) {
+          const pos = [y, middle.rel[x][y], x]
+          pipe.push([pos,'minecraft:' + middle.art[x][y]])
+        }
+      }
+      return {
+        size: middle.size,
+        pipe,
+      }
+    },
     //上传服务器 下载投影文件
     getLitematica(){
       if(this.posInfo.length > 0){
-        this.status.liteMaking = true
-        var postData = {
-          art: this.posInfo,
-          dir: this.imgInfo.direct,
-          rot: this.imgInfo.degree,
+        let postData = {}
+        //根据enhance决定发送的数据
+        if (this.status.enhance) {
+          //再次确认尺寸
+          if (this.posInfo.length * this.posInfo[0].length > 128*3*128*2) {
+            this.alert(this.lang.enhance_sizeout)
+            return
+          }
+          this.status.liteMaking = true
+          postData = this.getEnhancedPostData()
+        } else {
+          this.status.liteMaking = true
+          postData = {
+            art: this.posInfo,
+            dir: this.imgInfo.direct,
+            rot: this.imgInfo.degree,
+          }
         }
-        axios.post('https://mcpixelart.com/pixelart',postData,{
+        //根据enhance决定post的url
+        // const postURL = this.status.enhance ? 'http://localhost:9969/pixelartEnhance' : 'https://mcpixelart.com/pixelart'
+        const postURL = this.status.enhance ? 'https://mcpixelart.com/pixelartEnhance' : 'https://mcpixelart.com/pixelart'
+        axios.post(postURL,postData,{
         // axios.post('http://localhost:9969/pixelart',postData,{
           headers:{
             'Content-Type': 'application/json'
@@ -498,14 +708,29 @@ export default {
         .then(response=>{
           if(response.data && response.data.url){
             //服务器返回数据格式正确
-            this.downloadFile(response.data.url)
+            const href = this.status.enhance ? 'https://mcpixelart.com/enhance/' : 'https://mcpixelart.com/lite/'
+            this.downloadFile(href + response.data.url)
           }else{
             //服务器返回了错误的格式
-            this.alert(this.lang.a_500 + ' <br> ' + this.lang.con_mail)
+            this.alert(this.lang.a_500 + ' <br> ' + this.lang.con_mail,3)
           }
         })
         .catch(error=>{
-          this.alert(this.lang.a_400+' <br> '+error,3)
+          const status = error.response.status
+          if (status) {
+            if (status >= 400 && status < 500) {
+              //数据格式出错
+              this.alert(this.lang.a_400 + ' <br> ' + error, 3)
+            } else if (status >= 500) {
+              //服务器出错
+              this.alert(this.lang.a_500 + ' <br> ' + error, 3)
+            } else {
+              this.alert(error, 3)
+            }
+          } else {
+            this.alert(error, 3)
+          }
+          
         })
         .finally(() => {
           this.status.liteMaking = false
@@ -551,22 +776,30 @@ export default {
     height(){
       if(this.imageData) this.resizeImage(this.image)
     },
-    'selectedBlocks': {
+    selectedBlocks: {
       handler(stb) {
         Cookies.set('hist-bs',JSON.stringify(stb), { expires: new Date('Sat, 01 Jan 2037 00:00:00 UTC') })
       }
     },
-    'size': {
+    size: {
       deep: true,
       handler(sz) {
         Cookies.set('hist-sz',JSON.stringify(sz), { expires: new Date('Sat, 01 Jan 2037 00:00:00 UTC') })
+      }
+    },
+    //enhance复选框变化时自动生成图片
+    'status.enhance'(enh) {
+      //确保选择方块后才能进行
+      //图片必须加载
+      if (this.selectedBlocks && this.imageData) {
+        enh ? this.makeBd() : this.make()
       }
     },
   },
 }
 </script>
 
-<style scoped>
+<style lang="less" scoped>
   .outer{
    width: 100%;
    display: flex;
@@ -630,6 +863,8 @@ export default {
     width: 100%;
     height: 28px;
     display: grid;
+    user-select: none;
+    white-space: nowrap;
     place-items: center;
   }
   canvas{
@@ -650,8 +885,22 @@ export default {
   }
   .color-select{
     display: flex;
-    flex-direction: row-reverse;
+    flex-flow: column nowrap;
     position: relative;
+    gap: 10px;
+
+    .buttons-group {
+      display: flex;
+      flex-flow: row-reverse wrap;
+      white-space: nowrap;
+    }
+    
+    .input-group {
+      span, label {
+        user-select: none;
+        white-space: nowrap;
+      }
+    }
   }
   .btn-setting:hover svg{
     transform: rotate(60deg);
@@ -661,10 +910,10 @@ export default {
     transition: transform .3s ease;
   }
   .input-group{
-    width: 36%;
+    flex-grow: 1;
     height: 90%;
+    width: 100%;
     left: 0;
-    position: absolute;
   }
   .colorShow{
     display: inline-block;
@@ -691,12 +940,8 @@ export default {
 
     .color-select {
       flex-flow: row-reverse wrap;
-      white-space: nowrap;
     }
 
-    .input-group {
-      position: relative;
-      width: 70%;
-    }
+    
   }
 </style>
