@@ -82,7 +82,7 @@
           </button>
           &nbsp;
           <!-- 选择方块 -->
-          <button class="btn btn-outline-warning" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample" aria-controls="offcanvasExample">
+          <button class="btn btn-outline-warning" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasBlockSelect" aria-controls="offcanvasBlockSelect">
             {{ lang.block }}
           </button>
           &nbsp;
@@ -104,13 +104,15 @@
       </div> 
 
       <!-- 方块选择侧边栏 -->
-      <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
+      <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasBlockSelect" aria-labelledby="offcanvasExampleLabel">
         <div class="offcanvas-header">
-          <h4 class="offcanvas-title" id="offcanvasExampleLabel">{{ lang.selectblocks }}</h4>
+          <h4 class="offcanvas-title">{{ lang.selectblocks }}</h4>
           <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
         </div>
         <div class="offcanvas-body">
-          <div class="accordion" id="accordionExample">
+          <!-- 同色方块可以替换的提示 -->
+          <div class="alert alert-warning" role="alert" v-html="lang.selectAlert"></div>
+          <div class="accordion" id="accordionBlocks">
             <!-- 同一类的方块 -->
             <div class="accordion-item" v-for="block in this.blocks" :key="block.bid">
               <h2 class="accordion-header">
@@ -119,7 +121,7 @@
                   {{ lang_now == 'lang_cn' ? block.bname : block.bname_eng }}
                 </button>
               </h2>
-              <div :id="block.bname_eng" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+              <div :id="block.bname_eng" class="accordion-collapse collapse" data-bs-parent="#accordionBlocks">
                 <div class="accordion-body">
                   <!-- 全选和全不选 -->
                   <span class="btn btn-outline-success btn-sm" @click="block.bclass.map(bc=>bc.select=true)">{{ lang.selectall }}</span>
