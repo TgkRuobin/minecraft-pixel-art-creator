@@ -1619,6 +1619,8 @@ export default new Vuex.Store({
       enhance_alert: '[Enhanced Map] The size should not exceed (3 * 128) × (2 * 128), and server production may take a few minutes. Please be patient!',
       enhance_sizeout: '[Enhanced Map] The size should not exceed (3 * 128) × (2 * 128)',
       enhance_sizealt: '[Enhanced Map] If the size exceeds (3 * 128) × (2 * 128), you can preview the rendering on your own computer, but the server will not accept download requests',
+      dither: 'Dithering',
+      dither_info: 'Using jitter algorithms may make pixel art appear smoother',
 
       info: 'Info',
       i_ge: '',
@@ -1720,6 +1722,8 @@ export default new Vuex.Store({
       enhance_alert: '【加强地图画】的尺寸不能超过(3*128)×(2*128)，不支持手动搭建，服务器制作需要几分钟，请耐心等待！',
       enhance_sizeout: '【加强地图画】尺寸不能超过(3*128)×(2*128)',
       enhance_sizealt: '【加强地图画】尺寸超过了(3*128)×(2*128)，您可在自己电脑上预览效果图，但服务器不会接受下载请求',
+      dither: '抖动算法',
+      dither_info: '使用抖动算法可能会使像素画看起来更平滑',
 
       //Dim2D统计信息
       info: '统计信息',
@@ -1754,7 +1758,7 @@ export default new Vuex.Store({
     //当前语言类型
     lang_now: 'lang_cn',
     //当前版本
-    version: '2.5'
+    version: '2.6'
   },
   mutations: {
     //切换语言 如未指定lang则切换为另一种语音

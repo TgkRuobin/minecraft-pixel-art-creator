@@ -53,6 +53,11 @@
           <input type="text" name="w" class="form-control" v-model="width">
           <span class="input-group-text">{{ lang.height }}</span>
           <input type="text" name="h" class="form-control" v-model="height">
+          <!-- 抖动算法复选框 -->
+          <div class="input-group-text">
+            <input class="form-check-input mt-0" type="checkbox" v-model="status.dither" id="isDither">
+            <label for="isDither">{{ lang.dither }}</label>
+          </div>
           <!-- 加强地图画复选框 -->
           <div class="input-group-text">
             <input class="form-check-input mt-0" type="checkbox" v-model="status.enhance" id="isEnhance">
@@ -93,13 +98,17 @@
           </button>
         </div>
 
-        <!-- 地图画enhance功能的提示 -->
+        <!-- 地图画enhance+dither功能的提示 -->
         <div class="alert alert-info" role="alert">
           {{ lang.enhance_info }}
         </div>
         <div class="alert alert-warning" role="alert">
           {{ lang.enhance_alert }}
         </div>
+        <div class="alert alert-secondary" role="alert">
+          {{ lang.dither_info }}
+        </div>
+
 
       </div> 
 
@@ -256,6 +265,8 @@ export default {
         alertIcon: 0,
         //是否采用加强地图画
         enhance: false,
+        //是否采用抖动算法
+        dither: false,
       },
       //提供给子组件的图片数据
       imgPreview: '',
@@ -405,20 +416,76 @@ export default {
       ctx.drawImage(img, 0, 0, this.width, this.height)
       this.imageData = ctx.getImageData(0, 0, canvas.width, canvas.height)
     },
+    //像素抖动
+    applyFloydSteinbergDithering() {
+      if (!this.status.dither) return
+      //使用原始图片重构imageData
+      this.resizeImage(this.image)
+      const width = this.imageData.width
+      const height = this.imageData.height
+      const data = this.imageData.data
+  
+      for (let y = 0; y < height; y++) {
+        for (let x = 0; x < width; x++) {
+          const index = (y * width + x) * 4
+          const r = data[index]
+          const g = data[index + 1]
+          const b = data[index + 2]
+
+
+          let closestColor
+          if (this.status.enhance) {
+            const {bc, modify} = this.closestColorBd({r, g, b})
+            closestColor = this.enhancedColors[bc.minecraft][modify]
+          } else {
+            closestColor = this.closestColor(r, g, b).color_rgb
+          }
+          const {r: cr, g: cg, b:cb} = closestColor
+
+          data[index] = cr
+          data[index + 1] = cg
+          data[index + 2] = cb
+
+          // Floyd-Steinberg 抖动算法
+          const oldGray = 0.299 * r + 0.587 * g + 0.114 * b
+          const newGray = 0.299 * cr + 0.587 * cg + 0.114 * cb
+          const error = oldGray - newGray
+
+          if (x < width - 1) {
+              data[(y * width + (x + 1)) * 4 + 2] += error * 7 / 16
+          }
+          if (x > 0 && y < height - 1) {
+              data[((y + 1) * width + (x - 1)) * 4 + 2] += error * 3 / 16
+          }
+          if (y < height - 1) {
+              data[((y + 1) * width + x) * 4 + 2] += error * 5 / 16
+          }
+          if (x < width - 1 && y < height - 1) {
+              data[((y + 1) * width + (x + 1)) * 4 + 2] += error * 1 / 16
+          }
+        }
+      }
+
+      const canvas = this.$refs.cmc
+      canvas.width = parseInt(this.width)
+      canvas.height = parseInt(this.height)
+      const ctx = canvas.getContext('2d')
+      ctx.putImageData(this.imageData, 0, 0)
+    },
     ///从mcblocks中找到最接近给定颜色的方块
     closestColor(r,g,b) {
       let minDistance = 9999999
       let closestBClass = null
-      for(let mcb of this.mcblocks){
-        for(let bc of mcb.bclass){
-          if(!bc.select) continue
+      for (let mcb of this.mcblocks){
+        for (let bc of mcb.bclass){
+          if (!bc.select) continue
           let color = bc.color_rgb
           let distance = Math.sqrt(
             Math.pow(r - color.r, 2) +  
             Math.pow(g - color.g, 2) +  
             Math.pow(b - color.b, 2)  
           )
-          if(distance < minDistance) { 
+          if (distance < minDistance) { 
             //选出最小色差的方块
             minDistance = distance
             closestBClass = bc
@@ -454,12 +521,12 @@ export default {
       let minDistance = 9999999
       let closestBClass = null
       let closestModify = ''
-      for(let mcb of this.mcblocks){
-        for(let bc of mcb.bclass){
-          if(!bc.select) continue
+      for (let mcb of this.mcblocks){
+        for (let bc of mcb.bclass){
+          if (!bc.select) continue
           const ec = this.enhancedColors[bc.minecraft]
           const cmp = compare(color,ec.low,ec.normal,ec.high)
-          if(cmp.distance < minDistance) { 
+          if (cmp.distance < minDistance) { 
             //选出最小色差的方块
             minDistance = cmp.distance
             closestModify = cmp.modify
@@ -481,6 +548,7 @@ export default {
       }
       //必须已经读取本地图片 并且选中了enhance复选框
       if(this.imageData && this.status.enhance){
+        this.resizeImage(this.image)
         this.status.artMaking = true
         const canvas = this.$refs.cmc
         canvas.width = parseInt(this.width)
@@ -557,7 +625,11 @@ export default {
         return
       }
       if(this.imageData){
+        this.resizeImage(this.image)
         this.status.artMaking = true
+        //调用抖动算法
+        this.applyFloydSteinbergDithering()
+
         const canvas = this.$refs.cmc
         canvas.width = parseInt(this.width)
         canvas.height = parseInt(this.height)
@@ -790,13 +862,13 @@ export default {
       }
     },
     //enhance复选框变化时自动生成图片
-    'status.enhance'(enh) {
+    // 'status.enhance'(enh) {
       //确保选择方块后才能进行
       //图片必须加载
-      if (this.selectedBlocks && this.imageData) {
-        enh ? this.makeBd() : this.make()
-      }
-    },
+    //   if (this.selectedBlocks && this.imageData) {
+    //     enh ? this.makeBd() : this.make()
+    //   }
+    // },
   },
 }
 </script>

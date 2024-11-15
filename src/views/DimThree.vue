@@ -513,7 +513,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="less" scoped>
   .outer {
     display: flex;
     justify-content: center;
