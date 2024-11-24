@@ -1758,7 +1758,7 @@ export default new Vuex.Store({
     //当前语言类型
     lang_now: 'lang_cn',
     //当前版本
-    version: '2.6'
+    version: '2.7'
   },
   mutations: {
     //切换语言 如未指定lang则切换为另一种语音

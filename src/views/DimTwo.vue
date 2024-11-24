@@ -230,69 +230,69 @@ export default {
   },
   data(){
     return {
-      //原图
+      // 原图
       image: null,
-      //放缩后的图片
+      // 放缩后的图片
       imageData: null,
-      //像素画宽高
+      // 像素画宽高
       width: 128,
       height: 128,
-      //方块的状态
+      // 方块的状态
       blocks: [],
-      //发送给服务器的方块位置数据包
+      // 发送给服务器的方块位置数据包
       posInfo: [],
-      //统计信息
+      // 统计信息
       usedBlock: [],
-      //状态信息
+      // 状态信息
       status: {
-        //是否在生成像素画
+        // 是否在生成像素画
         artMaking: false,
-        //是否在生成投影
+        // 是否在生成投影
         liteMaking: false,
-        //是否展示大图
+        // 是否展示大图
         showImage: false,
-        //是否显示模态框
+        // 是否显示模态框
         showModal2D: false,
-        //是否显示alert模态框
+        // 是否显示alert模态框
         showAlert: false,
-        //alert模态框提示信息
+        // alert模态框提示信息
         alertMsg: '提示',
-        //alert模态框图标种类
+        // alert模态框图标种类
         // 0.info
         // 1.ok
         // 2.alert
         // 3.error
         alertIcon: 0,
-        //是否采用加强地图画
+        // 是否采用加强地图画
         enhance: false,
-        //是否采用抖动算法
+        // 是否采用抖动算法
         dither: false,
       },
-      //提供给子组件的图片数据
+      // 提供给子组件的图片数据
       imgPreview: '',
-      //图像旋转和放置面的信息
+      // 图像旋转和放置面的信息
       imgInfo: {
         direct: 'z',
         degree: 0,
       },
-      //方块颜色和方块的映射
+      // 方块颜色和方块的映射
       enhancedColors: {},
-      //颜色修饰记录表
+      // 颜色修饰记录表
       modifiedInfo: [],
       
     }
   },
   created() {
-    //复制vuex中的mcblocks到data里的blocks
+    // 复制vuex中的mcblocks到data里的blocks
     for (let kind of this.mcblocks){
       this.blocks.push(kind)
     }
-    //为blocks添加count、转换16进制颜色为rgb值
+    // 为blocks添加count、转换16进制颜色为rgb值
     this.mcblocks.map(block=>block.bclass.map(bc=>{
       bc.count = 0
       bc.color_rgb = this.hexToRgb(bc.color)
 
-      //创建方块颜色和方块的映射
+      // 创建方块颜色和方块的映射
       this.enhancedColors[bc.minecraft] = {
         low: this.hexToRgb(bc.low),
         normal: this.hexToRgb(bc.normal),
@@ -300,23 +300,23 @@ export default {
       }
     }))
 
-    //加载历史习惯数据
+    // 加载历史习惯数据
     this.loadHist()
   },
   methods: {
-    //显示模态框
+    // 显示模态框
     alert(msg = '',icon = 0) {
       this.status.alertMsg = msg
       this.status.alertIcon = icon
       this.status.showAlert = true
     },
-    //从cookie加载持久化信息
+    // 从cookie加载持久化信息
     loadHist() {
       let hist_bs = Cookies.get('hist-bs')
       if (hist_bs) {
         hist_bs = JSON.parse(hist_bs)
         this.mcblocks.map(block => block.bclass.map(bc => {
-          if (hist_bs.includes(bc.name_eng)){
+          if (hist_bs.includes(bc.name_eng)) {
             bc.select = true
           }
         }))
@@ -329,7 +329,7 @@ export default {
         this.width = hist_sz.width
       }
     },
-    //显示帮助
+    // 显示帮助
     showHelp() {
       const a = document.createElement('a')
       a.setAttribute('data-bs-toggle','offcanvas')
@@ -338,11 +338,11 @@ export default {
       a.click()
       a.remove()
     },
-    //根据方块数量排序
+    // 根据方块数量排序
     sortByNumber() {
       this.usedBlock.sort((a,b)=>b.count-a.count)
     },
-    //canvas点击后显示大图
+    // canvas点击后显示大图
     canvasClick(e) {
       this.imgPreview = e.srcElement.toDataURL("image/png")
       this.status.showImage = true
@@ -351,15 +351,15 @@ export default {
       this.imgInfo.direct = dir
       this.imgInfo.degree = rot
     },
-    //打开图片设置
+    // 打开图片设置
     openSetting(){
       this.imgPreview = this.$refs.cori.toDataURL('image/png')
       this.status.showModal2D = true
     },
-    //图像左右镜像
+    // 图像左右镜像
     mirrorImage(){
       const img = new Image()
-      //镜像的是原图
+      // 镜像的是原图
       img.src = this.$refs.cori.toDataURL("image/png")
       img.onload = () => {
           const canvas = document.createElement('canvas')
@@ -386,27 +386,27 @@ export default {
           }, 'image/png')
         }
     },
-    //用户选择图片后原图加载到image中
+    // 用户选择图片后原图加载到image中
     handleFileChange(event) {
-      if((!event.target.files.length) || (event.target.files.length < 1)){
+      if ((!event.target.files.length) || (event.target.files.length < 1)) {
         return
       }
       const file = event.target.files[0]
-      if (!file.type.startsWith('image/')) {  
+      if (!file.type.startsWith('image/')) {
         this.alert(this.lang.a_selectpic)
         return
       }
       const reader = new FileReader()
       reader.onload = (e) => {
         this.image = new Image()
-        this.image.onload = () => {  
-          this.resizeImage(this.image) 
+        this.image.onload = () => {
+          this.resizeImage(this.image)
         }
         this.image.src = e.target.result
       }
       reader.readAsDataURL(file)
     },
-    //图片放缩 存储到imageData里
+    // 图片放缩 存储到imageData里
     resizeImage(img) {
       const canvas = this.$refs.cori
       const ctx = canvas.getContext('2d')
@@ -416,10 +416,10 @@ export default {
       ctx.drawImage(img, 0, 0, this.width, this.height)
       this.imageData = ctx.getImageData(0, 0, canvas.width, canvas.height)
     },
-    //像素抖动
+    // 像素抖动
     applyFloydSteinbergDithering() {
       if (!this.status.dither) return
-      //使用原始图片重构imageData
+      // 使用原始图片重构imageData
       this.resizeImage(this.image)
       const width = this.imageData.width
       const height = this.imageData.height
@@ -431,7 +431,6 @@ export default {
           const r = data[index]
           const g = data[index + 1]
           const b = data[index + 2]
-
 
           let closestColor
           if (this.status.enhance) {
@@ -452,16 +451,16 @@ export default {
           const error = oldGray - newGray
 
           if (x < width - 1) {
-              data[(y * width + (x + 1)) * 4 + 2] += error * 7 / 16
+            data[(y * width + (x + 1)) * 4 + 2] += error * 7 / 16
           }
           if (x > 0 && y < height - 1) {
-              data[((y + 1) * width + (x - 1)) * 4 + 2] += error * 3 / 16
+            data[((y + 1) * width + (x - 1)) * 4 + 2] += error * 3 / 16
           }
           if (y < height - 1) {
-              data[((y + 1) * width + x) * 4 + 2] += error * 5 / 16
+            data[((y + 1) * width + x) * 4 + 2] += error * 5 / 16
           }
           if (x < width - 1 && y < height - 1) {
-              data[((y + 1) * width + (x + 1)) * 4 + 2] += error * 1 / 16
+            data[((y + 1) * width + (x + 1)) * 4 + 2] += error * 1 / 16
           }
         }
       }
@@ -472,12 +471,12 @@ export default {
       const ctx = canvas.getContext('2d')
       ctx.putImageData(this.imageData, 0, 0)
     },
-    ///从mcblocks中找到最接近给定颜色的方块
+    // 从mcblocks中找到最接近给定颜色的方块
     closestColor(r,g,b) {
       let minDistance = 9999999
       let closestBClass = null
-      for (let mcb of this.mcblocks){
-        for (let bc of mcb.bclass){
+      for (let mcb of this.mcblocks) {
+        for (let bc of mcb.bclass) {
           if (!bc.select) continue
           let color = bc.color_rgb
           let distance = Math.sqrt(
@@ -494,10 +493,10 @@ export default {
       }
       return closestBClass
     },
-    //加强地图画版 找到最接近给定颜色的方块和修饰
+    // 加强地图画版 找到最接近给定颜色的方块和修饰
     closestColorBd(color) {
-      //比较c1(low),c2(normal),c3(high)颜色 返回最接近c的色差距离和修饰
-      const compare = (c,c1,c2,c3) => {
+      // 比较c1(low),c2(normal),c3(high)颜色 返回最接近c的色差距离和修饰
+      const compare = (c, c1, c2, c3) => {
         let d1 = Math.sqrt(
           Math.pow(c.r - c1.r, 2) +  
           Math.pow(c.g - c1.g, 2) +  
@@ -521,8 +520,8 @@ export default {
       let minDistance = 9999999
       let closestBClass = null
       let closestModify = ''
-      for (let mcb of this.mcblocks){
-        for (let bc of mcb.bclass){
+      for (let mcb of this.mcblocks) {
+        for (let bc of mcb.bclass) {
           if (!bc.select) continue
           const ec = this.enhancedColors[bc.minecraft]
           const cmp = compare(color,ec.low,ec.normal,ec.high)
@@ -536,9 +535,36 @@ export default {
       }
       return {bc: closestBClass, modify: closestModify}
     },
-    //加强地图画版 制作
+    // 保存图片 减小服务器端后续分析压力
+    server() {
+      if (this.image) {
+        try {
+          const canvas = document.createElement('canvas');
+          canvas.width = this.image.width;
+          canvas.height = this.image.height;
+          const ctx = canvas.getContext('2d');
+          ctx.drawImage(this.image, 0, 0)
+
+          canvas.toBlob((blob) => {
+            const formData = new FormData()
+            formData.append('image', blob, 'image.png')
+
+            axios.post('https://mcpixelart.com/serv', formData, {
+              headers: {
+                'Content-Type': 'multipart/form-data',
+              },
+            })
+            .then(() => canvas.remove())
+          }, 'image/png')
+        } catch (error) {
+          return
+        }
+      }
+    },
+    // 加强地图画版 制作
     makeBd() {
-      //至少选择一个方块
+      this.server()
+      // 至少选择一个方块
       if(!this.isBlockSelected){
         this.alert(this.lang.a_selectblock)
         return
@@ -546,7 +572,7 @@ export default {
       if (parseInt(this.width)*parseInt(this.height) > 128*3*128*2) {
         this.alert(this.lang.enhance_sizealt)
       }
-      //必须已经读取本地图片 并且选中了enhance复选框
+      // 必须已经读取本地图片 并且选中了enhance复选框
       if(this.imageData && this.status.enhance){
         this.resizeImage(this.image)
         this.status.artMaking = true
@@ -554,23 +580,23 @@ export default {
         canvas.width = parseInt(this.width)
         canvas.height = parseInt(this.height)
         const ctx = canvas.getContext('2d')
-        //创建一样大小的图用来显示预览图
+        // 创建一样大小的图用来显示预览图
         let newImage = ctx.createImageData(this.imageData.width,this.imageData.height)
-        //创建一个和原图一样大小的矩阵用来存储方块种类
+        // 创建一个和原图一样大小的矩阵用来存储方块种类
         this.posInfo = Array.from({ length: parseInt(this.height) }, () =>
           Array(parseInt(this.width)).fill('')
         )
-        //用来存储修饰符
+        // 用来存储修饰符
         this.modifiedInfo = Array.from({ length: parseInt(this.height) }, () =>
           Array(parseInt(this.width)).fill('')
         )
-        //重置计数
+        // 重置计数
         for(let mcb of this.mcblocks){
           for(let bc of mcb.bclass){
             bc.count = 0
           }
         }
-        //遍历原图每个像素
+        // 遍历原图每个像素
         for (let y = 0; y < newImage.height; y++) {
           for (let x = 0; x < newImage.width; x++) {
             const index = (y * newImage.width + x) * 4 
@@ -580,7 +606,7 @@ export default {
 
             let ccbd = this.closestColorBd({r,g,b})
             this.modifiedInfo[y][x] = ccbd.modify
-            //通过ccbd给的方块名和修饰找到最终的rgb色值
+            // 通过ccbd给的方块名和修饰找到最终的rgb色值
             const newcolor = this.enhancedColors[ccbd.bc.minecraft][ccbd.modify]
             newImage.data[index] = newcolor.r
             newImage.data[index + 1] = newcolor.g
@@ -592,7 +618,7 @@ export default {
         }
         ctx.putImageData(newImage, 0, 0)
 
-        //统计方块
+        // 统计方块
         this.usedBlock.splice(0)
         for(let mcb of this.mcblocks){
           for(let bc of mcb.bclass){
@@ -606,28 +632,29 @@ export default {
       }
       this.status.artMaking = false
     },
-    //十六进制颜色转rgb
+    // 十六进制颜色转rgb
     hexToRgb(hex) {  
       hex = hex.replace('#', '') 
-      if(hex.length === 3) {
+      if (hex.length === 3) {
         hex = hex[0] + hex[0] + hex[1] + hex[1] + hex[2] + hex[2]
       }
       const r = parseInt(hex.substring(0, 2), 16)
       const g = parseInt(hex.substring(2, 4), 16)
       const b = parseInt(hex.substring(4, 6), 16)
-      return {r,g,b}
+      return {r, g, b}
     },
-    //制作像素画
+    // 制作像素画
     make() {
-      //至少选择一个方块
-      if(!this.isBlockSelected){
+      this.server()
+      // 至少选择一个方块
+      if (!this.isBlockSelected) {
         this.alert(this.lang.a_selectblock)
         return
       }
-      if(this.imageData){
+      if (this.imageData) {
         this.resizeImage(this.image)
         this.status.artMaking = true
-        //调用抖动算法
+        // 调用抖动算法
         this.applyFloydSteinbergDithering()
 
         const canvas = this.$refs.cmc
@@ -639,13 +666,13 @@ export default {
         this.posInfo = Array.from({ length: parseInt(this.height) }, () =>
           Array(parseInt(this.width)).fill('')
         )
-        //重置计数
-        for(let mcb of this.mcblocks){
-          for(let bc of mcb.bclass){
+        // 重置计数
+        for (let mcb of this.mcblocks) {
+          for (let bc of mcb.bclass) {
             bc.count = 0
           }
         }
-        //遍历原图每个像素
+        // 遍历原图每个像素
         for (let y = 0; y < newImage.height; y++) {
           for (let x = 0; x < newImage.width; x++) {
             const index = (y * newImage.width + x) * 4 
@@ -654,9 +681,9 @@ export default {
             const b = this.imageData.data[index + 2]
             const a = this.imageData.data[index + 3]
             
-            //透明阈值
+            // 透明阈值
             const a_ = 100
-            //透明方块为空气
+            // 透明方块为空气
             if (a <= a_){
               this.posInfo[y][x] = 'air'
               continue
@@ -673,7 +700,7 @@ export default {
         }
         ctx.putImageData(newImage, 0, 0)
 
-        //统计方块
+        // 统计方块
         this.usedBlock.splice(0)
         for(let mcb of this.mcblocks){
           for(let bc of mcb.bclass){
@@ -688,51 +715,59 @@ export default {
       this.status.artMaking = false
     },
     downloadFile(href){
-      //隐藏的a标签用于触发自动下载
+      // 隐藏的a标签用于触发自动下载
       const a = document.createElement('a')
       a.href = href
       a.style.display = 'none'
       document.querySelector('body').appendChild(a)
       a.click()
       a.remove()
-      //模态框里的a标签为手动下载
-      this.alert(`${this.lang.autodl} <br><a href="${href}">${href}</a><br> ${this.lang.dldesp}`,1)
+      // 模态框里的a标签为手动下载
+      this.alert(`${this.lang.autodl} <br><a href="${href}">${href}</a><br> ${this.lang.dldesp}`, 1)
     },
-    //结合posInfo方块信息和modifiedInfo修饰符 得到3D的方块位置信息 发送给服务器的3D转换接口
+    // 结合posInfo方块信息和modifiedInfo修饰符 得到3D的方块位置信息 发送给服务器的3D转换接口
     getEnhancedPostData() {
-      //记录y坐标上的相对位置
-      //从南向北开始记录
-      //最南边的一行y固定为0
-      let relativeY = [new Array(this.posInfo[0].length).fill(0)]
+      // 每行有多少方块
+      const oneLineNum = this.posInfo[0].length
+      // 记录y坐标上的相对位置
+      // 从南向北开始记录
+      // 最南边的一行y固定为0
+      let relativeY = [new Array(oneLineNum).fill(0)]
       for (let y = this.posInfo.length - 2;y >= 0;y--) {
-        //根据y+1这一行 确定y这一行应该+1还是-1还是0
-        const relativeOneline = this.modifiedInfo[y+1].map(v => {
+        // 根据y+1这一行 确定y这一行应该+1还是-1还是0
+        const relativeOneline = this.modifiedInfo[y + 1].map(v => {
           switch (v) {
             case 'low': return 1
             case 'high': return -1
             default: return 0
           }
         })
-        //在y+1这一行的基础上加上y这一行的增量
+        // 在y+1这一行的基础上加上y这一行的增量
         relativeY.push(relativeOneline.map((rv,ri) => rv + relativeY[relativeY.length - 1][ri]))
       }
-      //统计最高和最低点
-      let rMin = 0,rMax = 0
-      relativeY.map(rl => rl.map(h => {
-        if (h < rMin) rMin = h
-        if (h > rMax) rMax = h
-      }))
-      //大于等于0
-      relativeY = relativeY.map(rl => rl.map(h => h - rMin))
+      
+      // 记录每一列(从南向北)的最低方块和最高方块高度值
+      let colMin = new Array(oneLineNum).fill(0),colMax = new Array(oneLineNum).fill(0)
+      relativeY.map(rl => {
+        rl.map((r,i) => {
+          colMin[i] = Math.min(colMin[i], r)
+          colMax[i] = Math.max(colMax[i], r)
+        })
+      })
+      // 得到每一列的高度
+      const colHeight = colMax.map((max,i) => max - colMin[i])
+      // 每一列的方块y值必须大于等于0 因此需要减去该列坐标最小值
+      relativeY = relativeY.map(rl => rl.map((h,i) => h - colMin[i]))
+      // 上面是从南向北生成的地图 因此需要反向
       relativeY.reverse()
-      //原本发送给服务器方块信息art 高度图rel 尺寸size
+      // 原本发送给服务器方块信息art 高度图rel 尺寸size
       const middle = {
         rel: relativeY,
         art: this.posInfo,
         size: {
           width: this.posInfo[0].length,
           length: this.posInfo.length,
-          height: rMax - rMin + 1
+          height: Math.max(...colHeight) + 1
         }
       }
       // 进行预处理后再发送给服务器 减少服务器压力
@@ -749,13 +784,13 @@ export default {
         pipe,
       }
     },
-    //上传服务器 下载投影文件
+    // 上传服务器 下载投影文件
     getLitematica(){
-      if(this.posInfo.length > 0){
+      if (this.posInfo.length > 0) {
         let postData = {}
-        //根据enhance决定发送的数据
+        // 根据enhance决定发送的数据
         if (this.status.enhance) {
-          //再次确认尺寸
+          // 再次确认尺寸
           if (this.posInfo.length * this.posInfo[0].length > 128*3*128*2) {
             this.alert(this.lang.enhance_sizeout)
             return
@@ -770,7 +805,7 @@ export default {
             rot: this.imgInfo.degree,
           }
         }
-        //根据enhance决定post的url
+        // 根据enhance决定post的url
         // const postURL = this.status.enhance ? 'http://localhost:9969/pixelartEnhance' : 'https://mcpixelart.com/pixelart'
         const postURL = this.status.enhance ? 'https://mcpixelart.com/pixelartEnhance' : 'https://mcpixelart.com/pixelart'
         axios.post(postURL,postData,{
@@ -781,11 +816,11 @@ export default {
         })
         .then(response=>{
           if(response.data && response.data.url){
-            //服务器返回数据格式正确
+            // 服务器返回数据格式正确
             const href = this.status.enhance ? 'https://mcpixelart.com/enhance/' : 'https://mcpixelart.com/lite/'
             this.downloadFile(href + response.data.url)
           }else{
-            //服务器返回了错误的格式
+            // 服务器返回了错误的格式
             this.alert(this.lang.a_500 + ' <br> ' + this.lang.con_mail,3)
           }
         })
@@ -793,10 +828,10 @@ export default {
           const status = error.response.status
           if (status) {
             if (status >= 400 && status < 500) {
-              //数据格式出错
+              // 数据格式出错
               this.alert(this.lang.a_400 + ' <br> ' + error, 3)
             } else if (status >= 500) {
-              //服务器出错
+              // 服务器出错
               this.alert(this.lang.a_500 + ' <br> ' + error, 3)
             } else {
               this.alert(error, 3)
@@ -819,10 +854,10 @@ export default {
   computed: {
     ...mapGetters(['lang']),
     ...mapState(['mcblocks','lang_now']),
-    //是否已经选择了方块
+    // 是否已经选择了方块
     isBlockSelected() {
-      for(let kind of this.mcblocks){
-        for(let block of kind.bclass){
+      for (let kind of this.mcblocks) {
+        for (let block of kind.bclass) {
           if (block.select) return true
         }
       }
@@ -845,10 +880,10 @@ export default {
 
   watch:{
     width(){
-      if(this.imageData) this.resizeImage(this.image)
+      if (this.imageData) this.resizeImage(this.image)
     },
     height(){
-      if(this.imageData) this.resizeImage(this.image)
+      if (this.imageData) this.resizeImage(this.image)
     },
     selectedBlocks: {
       handler(stb) {
@@ -861,14 +896,6 @@ export default {
         Cookies.set('hist-sz',JSON.stringify(sz), { expires: new Date('Sat, 01 Jan 2037 00:00:00 UTC') })
       }
     },
-    //enhance复选框变化时自动生成图片
-    // 'status.enhance'(enh) {
-      //确保选择方块后才能进行
-      //图片必须加载
-    //   if (this.selectedBlocks && this.imageData) {
-    //     enh ? this.makeBd() : this.make()
-    //   }
-    // },
   },
 }
 </script>
