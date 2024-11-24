@@ -1,11 +1,12 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 
-import HomePage from '@/views/HomePage.vue'
-import DimTwo from '@/views/DimTwo.vue'
-import DimThree from '@/views/DimThree.vue'
-import BedRock from '@/views/BedRock.vue'
-import Page404 from '@/views/NotFound.vue'
+const HomePage = ()=> import('@/views/HomePage.vue')
+const DimTwo   = ()=> import('@/views/DimTwo.vue')
+const DimThree = ()=> import('@/views/DimThree.vue')
+const BedRock  = ()=> import('@/views/BedRock.vue')
+const Page404  = ()=> import('@/views/NotFound.vue')
+
 Vue.use(VueRouter)
 
 const router = new VueRouter({
