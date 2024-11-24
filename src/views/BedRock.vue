@@ -159,6 +159,11 @@ export default {
         this.nameMap[bc.minecraft] = bc.name
       }
     }
+    this.offsetMap['air'] = {
+      x: 47 * 32,
+      y: 47 * 32
+    }
+    this.nameMap['air'] = 'None'
     this.status.selectedBlock = this.lang.bd_specific
     //加载上次访问的url
     const histUrl = Cookies.get('hist-bd-url')

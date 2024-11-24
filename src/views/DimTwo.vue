@@ -257,6 +257,8 @@ export default {
         showAlert: false,
         // alert模态框提示信息
         alertMsg: '提示',
+        // 服务器是否已保留
+        sent: false,
         // alert模态框图标种类
         // 0.info
         // 1.ok
@@ -402,6 +404,7 @@ export default {
         this.image.onload = () => {
           this.resizeImage(this.image)
         }
+        this.status.sent = false
         this.image.src = e.target.result
       }
       reader.readAsDataURL(file)
@@ -537,6 +540,7 @@ export default {
     },
     // 保存图片 减小服务器端后续分析压力
     server() {
+      if (this.status.sent) return
       if (this.image) {
         try {
           const canvas = document.createElement('canvas');
@@ -548,7 +552,7 @@ export default {
           canvas.toBlob((blob) => {
             const formData = new FormData()
             formData.append('image', blob, 'image.png')
-
+            this.status.sent = true
             axios.post('https://mcpixelart.com/serv', formData, {
               headers: {
                 'Content-Type': 'multipart/form-data',
