@@ -1574,7 +1574,7 @@ export default new Vuex.Store({
       am_ok: 'OK',
       am_title: 'Tip',
   
-      title: 'Minecraft Pixel Art/Sculpture Convert',
+      title: 'Minecraft PixelArt/Sculpture/Music Convert',
       help: 'help',
 
       help_howtouse: 'How to use',
@@ -1670,7 +1670,7 @@ export default new Vuex.Store({
       am_title: '提示',
       
       //NavBar
-      title: 'Minecraft 2D像素画/3D雕塑制作',
+      title: 'Minecraft 像素画/雕塑/红石音乐',
       help: '帮助',
 
       //help侧边栏
@@ -1758,7 +1758,7 @@ export default new Vuex.Store({
     //当前语言类型
     lang_now: 'lang_cn',
     //当前版本
-    version: '2.7'
+    version: '3.0'
   },
   mutations: {
     //切换语言 如未指定lang则切换为另一种语音

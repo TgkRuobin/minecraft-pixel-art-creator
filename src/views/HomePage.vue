@@ -36,10 +36,17 @@
         </div>
         <div class="box borderShade" @click="$router.push('/3d')">
           <img src="@/assets/img/3d.png">
-          <img src="@/assets/img/新.svg" id="new">
           <div class="shade">
             <div><h3>3D</h3></div>
             <h6>{{ lang.d3 }}</h6>
+          </div>
+        </div>
+        <div class="box borderShade" @click="$router.push('/music')">
+          <img src="@/assets/img/music.png">
+          <img src="@/assets/img/新.svg" id="new">
+          <div class="shade">
+            <div><h3>Music</h3></div>
+            <h6>红石音乐</h6>
           </div>
         </div>
       </div>
@@ -138,7 +145,7 @@ export default {
   }
 
   .box {
-    margin: 40px;
+    margin: 20px;
     border: none;
     border-radius: 16px;
     width: 240px;
@@ -192,8 +199,7 @@ export default {
     width: 64px;
     height: 64px;
   }
-
-  @media only screen and (max-width: 800px) {
+  @media only screen and (max-width: 1200px) {
     .nav {
       h4 {
         display: none;  
@@ -201,8 +207,25 @@ export default {
     }
 
     .box {
-      width: 46%;
-      height: 30vh;
+      width: 200px;
+      height: 240px;
     }
   }
+  @media only screen and (max-width: 800px) {
+    .nav {
+      display: none;  
+    }
+
+    .box {
+      width: 163px;
+      height: 193px;
+    }
+  }
+  @media only screen and (max-width: 600px) {
+    .box {
+      width: 163px;
+      height: 193px;
+    }
+  }
+  
 </style>
